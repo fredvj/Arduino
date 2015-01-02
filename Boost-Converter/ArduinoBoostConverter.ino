@@ -10,6 +10,16 @@
 #define DIGITAL_PIN_PWM_OUT           6
 #define ANALOG_PIN_FEEDBACK_VOLTAGE   0
 
+#define DIGITAL_PIN_LED_RED           8
+#define DIGITAL_PIN_LED_YELLOW        9
+#define DIGITAL_PIN_LED_GREEN         10
+
+// LED helpers
+
+#define RedLED() {digitalWrite(DIGITAL_PIN_LED_RED, true); digitalWrite(DIGITAL_PIN_LED_YELLOW, false); digitalWrite(DIGITAL_PIN_LED_GREEN, false);}
+#define YellowLED() {digitalWrite(DIGITAL_PIN_LED_RED, false); digitalWrite(DIGITAL_PIN_LED_YELLOW, true); digitalWrite(DIGITAL_PIN_LED_GREEN, false);}
+#define GreenLED() {digitalWrite(DIGITAL_PIN_LED_RED, false); digitalWrite(DIGITAL_PIN_LED_YELLOW, false); digitalWrite(DIGITAL_PIN_LED_GREEN, true);}
+
 // It is a good idea to limit the duty cycle that is driving the transistor charging the inductor
 // A duty cycle of 100% (255) would create a short circuit
 // We are going to limit at around 80%: 255/100*80 = 204
@@ -83,6 +93,16 @@ void setup() {
   // Start with the requested value for the duty cycle to start with - 0 if unchanged
   
   analogWrite(DIGITAL_PIN_PWM_OUT, PWM_START);
+  
+  // Setup LED outputs
+  
+  pinMode(DIGITAL_PIN_LED_RED, OUTPUT);
+  pinMode(DIGITAL_PIN_LED_YELLOW, OUTPUT);
+  pinMode(DIGITAL_PIN_LED_GREEN, OUTPUT);
+  
+  // Setup LEDs
+  
+  RedLED();
 }
 
 void loop() {
@@ -142,6 +162,10 @@ void ConstantVoltage(float TargetVoltage) {
 #ifdef _DEBUG_
         Serial.print("too low; ");
 #endif
+
+        // Turn on the red LED
+        
+        RedLED();
       }
 
       // Spike ?
@@ -156,6 +180,10 @@ void ConstantVoltage(float TargetVoltage) {
 #ifdef _DEBUG_
         Serial.print("spike; ");
 #endif
+
+        // Turn on the red LED
+        
+        RedLED();
       }
     }
     
@@ -178,6 +206,10 @@ void ConstantVoltage(float TargetVoltage) {
 #ifdef _DEBUG_
         Serial.print("increase");
 #endif
+
+        // Turn on the yellow LED
+        
+        YellowLED();
       }
 
       // Decrease duty cycle ?
@@ -198,6 +230,10 @@ void ConstantVoltage(float TargetVoltage) {
 #ifdef _DEBUG_
         Serial.print("decrease");
 #endif
+
+        // Turn on the yellow LED
+        
+        YellowLED();
       }
     }
 
@@ -209,7 +245,12 @@ void ConstantVoltage(float TargetVoltage) {
     
     LoopCounter++;
     Serial.println();
-    
+
+    if(((Voltage - MINIMUM_VOLTAGE_DELTA) < TargetVoltage) && (TargetVoltage < (Voltage + MINIMUM_VOLTAGE_DELTA))) {    
+      // Turn on the green LED - we are well on range of our target voltage
+      
+      GreenLED();
+    }
   } // End of while(true)
   
 #ifdef _DEBUG_
