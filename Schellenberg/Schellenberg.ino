@@ -1,3 +1,7 @@
+// Include header files for the watchdog timer
+
+#include <avr/wdt.h>
+
 // Include header files for the DS1307 real time clock and the i2c bus
 
 #include <Wire.h>
@@ -243,6 +247,10 @@ unsigned long getDaySeconds(void) {
 }
 
 void setup() {
+  // Enable the watchdog timer - 1 second
+
+  wdt_enable(WDTO_1S);
+  
   // Set up the serial port
 
   #ifdef _DEBUG
@@ -318,6 +326,10 @@ void setup() {
 }
 
 void loop() {
+  // Let us start by resetting the watchdog timer
+
+  wdt_reset();
+  
   // We call the clk() member functions of our global variables to keep them happy
 
   StatusLED.clk();
