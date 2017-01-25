@@ -1,5 +1,5 @@
 // LEDlib for Arduino
-// http://www.github.com/fredvj/LEDlib
+// https://github.com/fredvj/Arduino/tree/master/LED
 
 #include "LEDlib.h"
 #include <Arduino.h>

@@ -71,6 +71,7 @@ RTC_DS1307 rtc;
 
 unsigned long UpTime = 27900L; // 7:45 = 7*3600 + 45*60 = 27900
 unsigned long DownTime = 72900L; // 20:00 = 20*3600 +15*60 = 72900
+unsigned long DaySeconds = 0L;
 
 // Functions to read & store times in / from NVRAM
 
@@ -349,7 +350,7 @@ void loop() {
   if(ButtonState.isPressed()) {
     // This is automatic mode
     
-    unsigned long DaySeconds = getDaySeconds();
+    DaySeconds = getDaySeconds();
 
     // Check if we reached the time to move things up
 

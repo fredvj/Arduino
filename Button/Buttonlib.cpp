@@ -1,5 +1,5 @@
-// LEDlib for Arduino
-// http://www.github.com/fredvj/Buttonlib
+// Buttonlib for Arduino
+// https://github.com/fredvj/Arduino/tree/master/Button
 
 #include "Buttonlib.h"
 #include <Arduino.h>
